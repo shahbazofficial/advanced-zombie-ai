@@ -11,6 +11,7 @@ public class NavAgentExample : MonoBehaviour {
 
 	public bool hasPath = false;
 	public bool pathPending = false;
+	public bool isPathStale = false;
 
 	private NavMeshAgent _navAgent = null;
 
@@ -59,8 +60,11 @@ public class NavAgentExample : MonoBehaviour {
 	void Update () {
 		hasPath = _navAgent.hasPath;
 		pathPending = _navAgent.pathPending;
+		isPathStale = _navAgent.isPathStale;
 
 		if (!hasPath && !pathPending)
 			SetNextDestination (true);
+		else if (isPathStale)
+			SetNextDestination (false);
 	}
 }
