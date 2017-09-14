@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿// Script for controlling a placeholder NavMeshAgent on the scene.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class NavAgentExample : MonoBehaviour {
+public class NavAgent : MonoBehaviour {
+//public class NavAgentExample : MonoBehaviour {
 	
 	public AIWaypointNetwork wayPointNetwork = null;
 	public int currentIndex = 0;
@@ -13,11 +16,16 @@ public class NavAgentExample : MonoBehaviour {
 	public bool pathPending = false;
 	public bool isPathStale = false;
 
+    public NavMeshPathStatus pathStatus = NavMeshPathStatus.PathInvalid;
+
 	private NavMeshAgent _navAgent = null;
 
 	// Use this for initialization
 	void Start () {
 		_navAgent = GetComponent<NavMeshAgent> ();
+
+//        _navAgent.updatePosition = false;
+//        _navAgent.updateRotation = false;
 
 		if (wayPointNetwork == null)
 			return;
@@ -39,7 +47,7 @@ public class NavAgentExample : MonoBehaviour {
 
 		Transform nextWaypointTransform = null;
 
-		while (nextWaypointTransform == null) {
+//		while (nextWaypointTransform == null) {
 			int nextWaypoint;
 			if ((currentIndex + incrementStep) >= wayPointNetwork.Waypoints.Count)
 				nextWaypoint = 0;
@@ -52,7 +60,7 @@ public class NavAgentExample : MonoBehaviour {
 				_navAgent.destination = nextWaypointTransform.position;
 				return;
 			}
-		}
+//		}
 		currentIndex++;
 	}
 
@@ -61,8 +69,9 @@ public class NavAgentExample : MonoBehaviour {
 		hasPath = _navAgent.hasPath;
 		pathPending = _navAgent.pathPending;
 		isPathStale = _navAgent.isPathStale;
+        pathStatus = _navAgent.pathStatus;
 
-		if (!hasPath && !pathPending)
+        if ((!hasPath && !pathPending) || pathStatus == NavMeshPathStatus.PathInvalid /*|| pathStatus == NavMeshPathStatus.PathPartial*/)
 			SetNextDestination (true);
 		else if (isPathStale)
 			SetNextDestination (false);
