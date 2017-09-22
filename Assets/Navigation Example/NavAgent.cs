@@ -9,15 +9,16 @@ using UnityEngine.AI;
 public class NavAgent : MonoBehaviour {
 //public class NavAgentExample : MonoBehaviour {
 	
+    // Public members
 	public AIWaypointNetwork wayPointNetwork = null;
 	public int currentIndex = 0;
-
 	public bool hasPath = false;
 	public bool pathPending = false;
 	public bool isPathStale = false;
-
     public NavMeshPathStatus pathStatus = NavMeshPathStatus.PathInvalid;
+    public AnimationCurve jumpCurve = new AnimationCurve();
 
+    // Private members
 	private NavMeshAgent _navAgent = null;
 
 	// Use this for initialization
@@ -35,6 +36,7 @@ public class NavAgent : MonoBehaviour {
 		SetNextDestination(false);
 	}
 
+    // This function sets the next waypoint as destination depending on certain conditions.
 	void SetNextDestination(bool increment){
 		if (!wayPointNetwork)
 			return;
@@ -73,7 +75,7 @@ public class NavAgent : MonoBehaviour {
 
         if(_navAgent.isOnOffMeshLink)
         {
-            StartCoroutine(Jump(2.0f));
+            StartCoroutine(Jump(1.0f));
             return;
         }
 
@@ -96,7 +98,7 @@ public class NavAgent : MonoBehaviour {
         while(time <= duration)
         {
             float t = time / duration;
-            _navAgent.transform.position = Vector3.Lerp(startPos, endPos, t);
+            _navAgent.transform.position = Vector3.Lerp(startPos, endPos, t) + (jumpCurve.Evaluate(t) * Vector3.up);
             time += Time.deltaTime;
             yield return null;
         }
