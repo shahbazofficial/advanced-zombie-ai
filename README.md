@@ -1,4 +1,4 @@
-# advanced-shooter
+# advanced-zombie-ai
 An unity project for learning smart zombie AI.
 
 This project was created for experimenting with zombie AI for shooter/survival games.
