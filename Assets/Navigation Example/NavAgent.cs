@@ -71,9 +71,35 @@ public class NavAgent : MonoBehaviour {
 		isPathStale = _navAgent.isPathStale;
         pathStatus = _navAgent.pathStatus;
 
-        if ((!hasPath && !pathPending) || pathStatus == NavMeshPathStatus.PathInvalid /*|| pathStatus == NavMeshPathStatus.PathPartial*/)
-			SetNextDestination (true);
-		else if (isPathStale)
+        if(_navAgent.isOnOffMeshLink)
+        {
+            StartCoroutine(Jump(2.0f));
+            return;
+        }
+
+//      if ((!hasPath && !pathPending) || pathStatus == NavMeshPathStatus.PathInvalid /*|| pathStatus == NavMeshPathStatus.PathPartial*/)
+        if ((_navAgent.remainingDistance <= _navAgent.stoppingDistance && !pathPending) || pathStatus == NavMeshPathStatus.PathInvalid /*|| pathStatus == NavMeshPathStatus.PathPartial*/)
+        {
+            SetNextDestination (true);
+        }
+        else if (isPathStale)
 			SetNextDestination (false);
 	}
+
+    IEnumerator Jump(float duration)
+    {
+        OffMeshLinkData linkData = _navAgent.currentOffMeshLinkData;
+        Vector3 startPos = _navAgent.transform.position;
+        Vector3 endPos = linkData.endPos + (_navAgent.baseOffset * Vector3.up);
+        float time = 0.0f;
+
+        while(time <= duration)
+        {
+            float t = time / duration;
+            _navAgent.transform.position = Vector3.Lerp(startPos, endPos, t);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        _navAgent.CompleteOffMeshLink();
+    }
 }
