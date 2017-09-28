@@ -30,9 +30,6 @@ public class NavAgent : MonoBehaviour {
 
 		if (wayPointNetwork == null)
 			return;
-//		if (wayPointNetwork.Waypoints [currentIndex] != null) {
-//			_navAgent.destination = wayPointNetwork.Waypoints [currentIndex].position;
-//		}
 		SetNextDestination(false);
 	}
 
@@ -48,21 +45,19 @@ public class NavAgent : MonoBehaviour {
 			incrementStep = 0;
 
 		Transform nextWaypointTransform = null;
+        
+		int nextWaypoint;
+		if ((currentIndex + incrementStep) >= wayPointNetwork.Waypoints.Count)
+			nextWaypoint = 0;
+		else
+			nextWaypoint = currentIndex + incrementStep;
 
-//		while (nextWaypointTransform == null) {
-			int nextWaypoint;
-			if ((currentIndex + incrementStep) >= wayPointNetwork.Waypoints.Count)
-				nextWaypoint = 0;
-			else
-				nextWaypoint = currentIndex + incrementStep;
-
-			nextWaypointTransform = wayPointNetwork.Waypoints [nextWaypoint];
-			if (nextWaypointTransform != null) {
-				currentIndex = nextWaypoint;
-				_navAgent.destination = nextWaypointTransform.position;
-				return;
-			}
-//		}
+		nextWaypointTransform = wayPointNetwork.Waypoints [nextWaypoint];
+		if (nextWaypointTransform != null) {
+			currentIndex = nextWaypoint;
+			_navAgent.destination = nextWaypointTransform.position;
+			return;
+		}
 		currentIndex++;
 	}
 
@@ -79,7 +74,6 @@ public class NavAgent : MonoBehaviour {
             return;
         }
 
-//      if ((!hasPath && !pathPending) || pathStatus == NavMeshPathStatus.PathInvalid /*|| pathStatus == NavMeshPathStatus.PathPartial*/)
         if ((_navAgent.remainingDistance <= _navAgent.stoppingDistance && !pathPending) || pathStatus == NavMeshPathStatus.PathInvalid /*|| pathStatus == NavMeshPathStatus.PathPartial*/)
         {
             SetNextDestination (true);
