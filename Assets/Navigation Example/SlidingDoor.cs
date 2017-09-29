@@ -48,14 +48,15 @@ public class SlidingDoor : MonoBehaviour {
         Vector3 endPos;
 
         if (newState == DoorStates.Open)
+        {
             startPos = _closedPos;
-        else
-            startPos = _openPos;
-
-        if (newState == DoorStates.Open)
             endPos = _openPos;
+        }
         else
+        {
+            startPos = _openPos;
             endPos = _closedPos;
+        }
 
         while(time <= duration)
         {
