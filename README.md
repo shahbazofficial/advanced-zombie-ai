@@ -1,6 +1,5 @@
 # advanced-zombie-ai
-An unity project for learning smart zombie AI.
+## CAUTION
+### THIS PROJECT IS HEAVYLY WIP. TILL IT REACHES A STABLE STATE YOU MAY NOT USE IT IT YOUR PROJECTS. IF YOU WANT TO CHECK THIS OUT JUST OPEN THE PROJECT SEPARATELY.
 
-This project was created for experimenting with zombie AI for shooter/survival games.
-
-My Unity Version : 2017.1.1.f1
+My Unity Version : 2017.2.0f3
